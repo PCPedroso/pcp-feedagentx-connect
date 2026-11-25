@@ -1,0 +1,85 @@
+FeedAgentX – Product Feed & Pixel for ChatGPT Business Hub and ChatGPT Ads
+Full changelog. The readme lists the latest versions only.
+
+== Changelog ==
+
+= 2.5.1 =
+* Fix: a sync no longer stops with "internal_error" when another plugin or the theme throws an error while FeedAgentX reads a product. FeedAgentX reads products through the REST API, where WooCommerce has no cart, customer or session; some pricing and cart plugins fail without them.
+* When reading a product fails, the plugin loads WooCommerce's storefront context (cart, customer and session, as WooCommerce's Store API does) once and reads the product again. Nothing is saved and no cookie is set.
+* Each product field is read separately. If another plugin's hook still fails on one field, that field uses the value saved on the product (for prices, the price before that plugin's discount rules; for stock, the saved stock status) or is left out, and the rest of the product is sent.
+* FeedAgentX is told which plugin or theme failed, with a short error message, file and line (no server paths), in the feed response and in the error the sync records. Only the FeedAgentX connection, with the read token, receives it. The same detail goes to the plugin's log.
+* No changes to settings, the token, stored data or how the pixel works.
+
+= 2.5.0 =
+* New name: FeedAgentX – Product Feed & Pixel for ChatGPT Business Hub and ChatGPT Ads.
+* ChatGPT Business Hub next to ChatGPT Ads in the readme and on the Product Feed page: Business Hub gets its own hosted feed URL from FeedAgentX, added as a Hosted URL with its username and password; the CSV is a fallback. Includes our test on 13 Nov 2026 and OpenAI's market wording.
+* The plan text says the Free plan covers one ChatGPT channel of your choice (Business Hub or Ads); paid plans cover both.
+* The ChatGPT Ads Pixel page no longer says that a store connected to FeedAgentX has its catalog in ChatGPT Ads. Its status row is now "Product feed (FeedAgentX)".
+* New: a request for a WordPress.org review on the Product Feed and pixel pages. It appears only for administrators, at least 7 days after install (or after this update), and only once FeedAgentX is reading the catalog or the pixel has an accepted test or delivered purchase. "Don't show this again" and the review link both dismiss it for good. Nothing is offered for a review.
+* New: a WordPress.org support forum link next to Support on the Product Feed page.
+* The readme is shorter (under 10k); setup detail lives in the guides at feedagentx.com/docs, and older changelog entries in this file.
+* Tested with WooCommerce 11.3 (HPOS on) and WordPress 7.1.
+* Stored data: one new option (the time the plugin was first seen, for the 7-day wait) and one per-user flag for the dismissal; both are removed on uninstall. No changes to settings, the token, the REST API or how the pixel works.
+
+= 2.4.1 =
+* The Free plan now covers up to 500 products (was 25); plan text in the admin and readme updated.
+* Pixel test help: attributed conversions appear in Ads Manager reports after OpenAI's daily processing.
+
+= 2.4.0 =
+* New: a free ChatGPT Ads Pixel. Adds OpenAI's Measurement Pixel and Conversions API to WooCommerce, without code and without a FeedAgentX account.
+* Measures page views, product views, add to cart (classic and block themes), checkout started and purchases, with prices, currency and the product feed's item IDs.
+* Paid orders are also sent from your server in the background, retried when OpenAI cannot be reached, and counted once together with the browser event.
+* Hashed customer matching (email, phone with its country code, name) and WP Consent API support. Without consent, nothing is loaded or sent.
+* New "ChatGPT Ads Pixel" screen with setup steps, status, a validate-only test purchase and recent server deliveries, plus suggested privacy-policy text.
+* Simpler admin: three pages instead of tabs — Product Feed, ChatGPT Ads Pixel and Diagnostics. Old links still work.
+* Removed the legacy Feed Settings and Brand screens, the category filter, the per-product eligibility panel in the product editor and the Ads settings handover. The plugin now sends every published product; FeedAgentX decides which are advertised and holds seller, policy and country settings. Values saved on the removed screens are deleted on upgrade.
+* The Brand screen's "Site name" and fixed-brand options are gone; brands are detected automatically. If your products have no brand data, add your brand with WooCommerce Brands (Products → Brands) and assign it to them.
+* The connection token and the product data the feed reads are unchanged.
+
+= 2.3.3 =
+* New name: FeedAgentX – ChatGPT Ads Product Feed for WooCommerce.
+* The admin menu shows the FeedAgentX "F" instead of a generic feed icon.
+* Rewritten description, installation steps and FAQ.
+* No changes to settings, stored data, the token or the REST API.
+
+= 2.3.2 =
+* Adds a "Connect your store in three steps" card to the Connection tab, with the Store URL to copy and links to sign up, sign in, the setup guide and support.
+* The setup guide link opens the public documentation at www.feedagentx.com/docs.
+* Clearing the change log now records the cleared history, so FeedAgentX re-reads the whole catalog on its next sync instead of missing changes deleted before it fetched them.
+* The authenticated rate limit's help text says what it does: it cannot be turned off, and the minimum is 1.
+* The readme lists every store detail shared with FeedAgentX and says that logs record the IP address of refused requests.
+
+= 2.3.1 =
+* Adds a descriptive plugin name and a brand icon to the admin header.
+* Rewrites the plugin description. No changes to settings, stored data, the token or the REST API.
+
+= 2.3.0 =
+* Supports moving Ads settings to FeedAgentX, with explicit approval in WordPress before local Ads controls become read-only.
+* Reports excluded category IDs, full paths and exact-term scope consistently in health and feed responses. Existing source category filters remain active.
+* Keeps Search and Checkout settings independent of Ads ownership. Health requests never change ownership.
+
+= 2.2.0 =
+* Stable OpenAI product schema: canonical is_ads_eligible, independent search/Ads controls and explicit return acceptance.
+* Stable wc-ID identities survive SKU edits. Event-ID pagination and acknowledgments prevent change loss. Run a full sync after upgrading.
+* Active-sale prices follow WooCommerce's displayed tax convention; scheduled discounts are not published early.
+* Brand resolution, GTIN checksum validation, variant options and public URL checks.
+
+= 2.1.0 =
+* OpenAI flat (file-upload) feed fields, eligibility flags with per-product overrides, per-product brand, seller block and target countries.
+
+= 1.0.0 =
+* Initial public release.
+
+== Upgrade notices for older versions ==
+
+= 2.4.0 =
+Adds a free ChatGPT Ads Pixel (OpenAI Pixel and Conversions API), off until you turn it on. The legacy Feed Settings and Brand screens are removed and their values deleted; manage feed settings in FeedAgentX. The connection token is unchanged.
+
+= 2.3.3 =
+New plugin name, menu icon and description. Settings, the connection token and catalog data are unchanged.
+
+= 2.3.2 =
+Safer "Clear change log", a getting-started card and public setup guides. Settings, the connection token and catalog data are unchanged.
+
+= 2.3.0 =
+Update FeedAgentX before transferring Ads settings. Installing this release alone does not transfer ownership or remove category filters. Existing catalog settings are preserved.
